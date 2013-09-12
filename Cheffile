@@ -1,1 +1,5 @@
 site 'http://community.opscode.com/api/v1'
+cookbook 'git'
+cookbook 'apache'
+cookbook 'postgresql'
+cookbook 'python'
