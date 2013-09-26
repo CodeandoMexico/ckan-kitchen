@@ -2,7 +2,7 @@ USER = node[:user]
 HOME = "/home/#{USER}"
 ENV['VIRTUAL_ENV'] = "#{HOME}/pyenv"
 ENV['PATH'] = "#{ENV['VIRTUAL_ENV']}/bin:#{ENV['PATH']}"
-SOURCE_DIR = "#{HOME}/chef"
+SOURCE_DIR = "#{HOME}/ckan"
 
 # Create Database
 pg_user "ckanuser" do
@@ -45,10 +45,4 @@ end
 execute "set permissions" do
   cwd SOURCE_DIR
   command "paster datastore set-permissions postgres"
-end
-
-execute "run other tests" do
-  user USER
-  cwd SOURCE_DIR
-  command "nosetests --ckan --with-pylons=test-core.ini --nologcapture --cover-package=ckanext.datastore ckanext/datastore/tests -x"
 end

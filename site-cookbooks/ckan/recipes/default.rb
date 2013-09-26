@@ -10,7 +10,7 @@ USER = node[:user]
 HOME = "/home/#{USER}"
 ENV['VIRTUAL_ENV'] = "#{HOME}/pyenv"
 ENV['PATH'] = "#{ENV['VIRTUAL_ENV']}/bin:#{ENV['PATH']}"
-SOURCE_DIR = "#{HOME}/chef"
+SOURCE_DIR = "#{HOME}/ckan"
 
 FILESTORE = {
   :bucket => ENV['FILESTORE_BUCKET'],
@@ -23,6 +23,24 @@ FILESTORE = {
 user USER do
   home HOME
   supports :manage_home => true
+end
+
+# Clone ckan
+execute "clone ckan files" do
+  user USER
+  cwd HOME
+
+  command "git clone https://github.com/CodeandoMexico/ckan.git"
+  action :run
+end
+
+# switch to deplyment branch
+execute "switch to deployment branch" do
+  user USER
+  cwd SOURCE_DIR
+
+  command "git checkout deployment-config"
+  action :run
 end
 
 # Install Python
@@ -132,6 +150,14 @@ execute "give ckanuser sqlalchemy.url permission on test config file" do
   command "sed -i -e 's/.*sqlalchemy\\.url.=.postgresql.*/sqlalchemy.url=postgresql:\\/\\/ckanuser:pass@localhost\\/ckan_test/' test-core.ini"
 end
 
+# Give ckanuser sqlalchemy permission in test configuration
+execute "give ckanuser sqlalchemy.url permission on test config file" do
+  user USER
+  cwd SOURCE_DIR
+
+  command "sed -i -e 's/.*sqlalchemy\\.url.=.postgresql.*/sqlalchemy.url=postgresql:\\/\\/ckanuser:pass@localhost\\/ckan_test/' test-core.ini"
+end
+
 # Generate database
 execute "create database tables" do
   user USER
@@ -178,8 +204,3 @@ python_pip "#{SOURCE_DIR}/dev-requirements.txt" do
   action :install
 end
 
-execute "running tests with Postgres" do
-  user USER
-  cwd SOURCE_DIR
-  command "nosetests --ckan --with-pylons=test-core.ini --nologcapture ckan ckanext"
-end
