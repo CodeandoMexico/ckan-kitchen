@@ -25,6 +25,15 @@ user USER do
   supports :manage_home => true
 end
 
+# Delete previous ckan folder if existent
+execute "delete previous ckan folder if existent" do
+  user USER
+  cwd HOME
+
+  command "rm -fr ckan/"
+  action :run
+end
+
 # Clone ckan
 execute "clone ckan files" do
   user USER
