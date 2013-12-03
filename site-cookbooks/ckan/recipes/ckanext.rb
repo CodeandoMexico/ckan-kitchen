@@ -78,3 +78,15 @@ execute "add the ckanext-custom_theme plugin to the settings" do
   cwd SOURCE_DIR
   command "sed -i -e 's/.*ckan\\.plugins.*/& custom_theme/' #{node[:environment]}.ini"
 end
+
+execute "Changes the site.logo and site.title" do
+  user USER
+  cwd SOURCE_DIR
+  command "sed -i -e 's/.*ckan.site_logo.*/ckan.site_logo=\\/cmx-logo.png/;s/.*ckan.site_title.*/ckan.site_title=Codeando México/' #{node[:environment]}.ini"
+end
+
+execute "Change ckan's default locale to spanish" do
+  user USER
+  cwd SOURCE_DIR
+  command "sed -i -e 's/.*ckan.locale_default.*/ckan.locale_default=es/' #{node[:environment]}.ini"
+end
