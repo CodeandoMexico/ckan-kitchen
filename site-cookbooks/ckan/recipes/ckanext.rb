@@ -45,7 +45,7 @@ end
 
 execute "set permissions" do
   cwd SOURCE_DIR
-  command "paster datastore set-permissions postgres"
+  command "paster datastore set-permissions postgres -c #{node[:environment]}.ini"
 end
 
 # Set the custom theme plugin

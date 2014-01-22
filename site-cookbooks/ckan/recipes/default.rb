@@ -171,7 +171,7 @@ end
 execute "create database tables" do
   user USER
   cwd SOURCE_DIR
-  command "paster --plugin=ckan db init"
+  command "paster --plugin=ckan db init -c #{node[:environment]}.ini"
 end
 
 #Create WSGI script file
@@ -209,7 +209,7 @@ python_pip "#{SOURCE_DIR}/dev-requirements.txt" do
   user USER
   group USER
   virtualenv ENV['VIRTUAL_ENV']
-  options "-r"
+  options "--allow-all-external --allow-unverified polib -r"
   action :install
 end
 
