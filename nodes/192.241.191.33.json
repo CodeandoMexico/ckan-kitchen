@@ -7,6 +7,9 @@
   "environment": "production",
   "postgresql": {
     "version": "9.1",
-    "ssl": false
+    "ssl": false,
+    "password": {
+      "postgres": "f75ee182c5b9357915b1ddcdf3e711b1"
+    }
   }
 }
