@@ -82,7 +82,7 @@ end
 execute "Changes the site.logo and site.title" do
   user USER
   cwd SOURCE_DIR
-  command "sed -i -e 's/.*ckan.site_logo.*/ckan.site_logo=\\/cmx-logo.png/;s/.*ckan.site_title.*/ckan.site_title=Codeando México/' #{node[:environment]}.ini"
+  command "sed -i -e 's/.*ckan.site_logo.*/ckan.site_logo=\\/cmx-logo.png/;s/.*ckan.site_title.*/ckan.site_title=Codeando Mexico/' #{node[:environment]}.ini"
 end
 
 execute "Change ckan's default locale to spanish" do
