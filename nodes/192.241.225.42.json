@@ -4,7 +4,7 @@
     "recipe[ckan::ckanext]"
   ],
   "user": "ckan",
-  "environment": "development",
+  "environment": "staging",
   "postgresql": {
     "version": "9.1",
     "ssl": false
