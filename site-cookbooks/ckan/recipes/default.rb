@@ -39,16 +39,16 @@ execute "clone ckan files" do
   user USER
   cwd HOME
 
-  command "git clone https://github.com/CodeandoMexico/ckan.git"
+  command "git clone https://github.com/ckan/ckan.git"
   action :run
 end
 
-# switch to deplyment branch
-execute "switch to deployment branch" do
+# switch to v2.2 branch
+execute "switch to v2.2 branch" do
   user USER
   cwd SOURCE_DIR
 
-  command "git checkout deployment-config"
+  command "git checkout release-v2.2"
   action :run
 end
 
@@ -209,7 +209,7 @@ python_pip "#{SOURCE_DIR}/dev-requirements.txt" do
   user USER
   group USER
   virtualenv ENV['VIRTUAL_ENV']
-  options "--allow-all-external --allow-unverified polib -r"
+  options "-r"
   action :install
 end
 
