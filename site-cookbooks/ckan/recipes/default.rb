@@ -117,30 +117,29 @@ service "jetty" do
   action [:enable, :start]
 end
 
-
-filestore_ini_changes = ""
-if FILESTORE[:bucket]
-  python_pip "boto" do
-    user USER
-    group USER
-    virtualenv ENV['VIRTUAL_ENV']
-    action :install
-  end
-
-  storage = ";s/.*ckan\\.storage\\.bucket.*/ckan.storage.bucket=#{FILESTORE[:bucket]}/"
-  aws_tokens = "s/.*ofs\\.aws_access_key_id.*/ofs.aws_access_key_id=#{FILESTORE[:access_key_id]}/;s/.*ofs\\.aws_secret_access_key.*/ofs.aws_secret_access_key=#{FILESTORE[:secret_access_key]}/"
-
-  filestore_ini_changes = [storage, aws_tokens].join(";")
-
-end
-
 # Create configuration file
 execute "make paster's config file and setup solr_url and ckan.site_id" do
   user USER
   cwd SOURCE_DIR
 
-  command "paster make-config ckan #{node[:environment]}.ini --no-interactive && sed -i -e 's/.*solr_url.*/solr_url=http:\\/\\/127.0.0.1:8983\\/solr/;s/.*ckan\\.site_id.*/ckan.site_id=vagrant_ckan/#{filestore_ini_changes};s/.*cache_dir.*/cache_dir=\\/tmp\\/$(ckan.site_id)s\\//' #{node[:environment]}.ini"
+  command "paster make-config ckan #{node[:environment]}.ini --no-interactive && sed -i -e 's/.*solr_url.*/solr_url=http:\\/\\/127.0.0.1:8983\\/solr/;s/.*ckan\\.site_id.*/ckan.site_id=vagrant_ckan/;s/.*cache_dir.*/cache_dir=\\/tmp\\/$(ckan.site_id)s\\//' #{node[:environment]}.ini"
   creates "#{SOURCE_DIR}/#{node[:environment]}.ini"
+end
+
+# Activate FileStorage
+execute "activate filestorage in config file" do
+  user USER
+  cwd SOURCE_DIR
+
+  command "sed -i -e 's/.*storage_path.*/ckan.storage_path=\\/var\\/lib\\/ckan\\/default/' #{node[:environment]}.ini"
+end
+
+# create the directory where ckan will store uploaded files
+directory "/var/lib/ckan/default" do
+  owner "www-data"
+  mode 0700
+  action :create
+  recursive true
 end
 
 # Give ckanuser sqlalchemy permission in configuration
