@@ -12,13 +12,6 @@ ENV['VIRTUAL_ENV'] = "#{HOME}/pyenv"
 ENV['PATH'] = "#{ENV['VIRTUAL_ENV']}/bin:#{ENV['PATH']}"
 SOURCE_DIR = "#{HOME}/ckan"
 
-FILESTORE = {
-  :bucket => ENV['FILESTORE_BUCKET'],
-  :access_key_id => ENV['FILESTORE_S3_ACCESS_KEY_ID'],
-  :secret_access_key => ENV['FILESTORE_S3_SECRET_ACCESS_KEY']
-}
-
-
 # Create user
 user USER do
   home HOME
