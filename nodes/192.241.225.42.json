@@ -1,7 +1,8 @@
 {
   "run_list": [
     "recipe[ckan]",
-    "recipe[ckan::ckanext]"
+    "recipe[ckan::ckanext]",
+    "recipe[ckan::ckanext-harvester]"
   ],
   "user": "ckan",
   "environment": "staging",
