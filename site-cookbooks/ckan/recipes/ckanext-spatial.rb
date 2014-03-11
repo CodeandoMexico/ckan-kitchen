@@ -67,8 +67,8 @@ end
 #Clonar e instalar manual.
 #pip install -e git+https://github.com/okfn/ckanext-spatial.git@stable#egg=ckanext-spatial
 
-# delete previous harvester source folder if existent
-execute "delete previous ckanext-harvest source folder" do
+# delete previous ckanext-spatial source folder if existent
+execute "delete previous ckanext-spatial source folder" do
   cwd "#{CKAN_PYENV_SRC_DIR}"
   command "sudo rm -rf ckanext-spatial"
   action :run
