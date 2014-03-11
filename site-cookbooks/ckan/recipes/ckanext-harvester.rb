@@ -59,14 +59,11 @@ execute "activate harvester plugin in config file" do
 end
 
 # activate Redis Backend for harvester
-ruby_block "activate harvester backend" do
-  block do
-    file = Chef::Util::FileEdit.new("#{SOURCE_DIR}/#{node[:environment]}.ini")
-    file.search_file_delete_line("/ckan.harvest.mq.type/")
-    file.insert_line_after_match("/.*ckan\.plugins.*/", "\n#Harvester Backend configuration\nckan.harvest.mq.type = redis\n")
-    file.write_file
-  end
-  only_if do ::File.exists?("#{SOURCE_DIR}/#{node[:environment]}.ini") end
+execute "activate harvester plugin in config file" do
+  user USER
+  cwd SOURCE_DIR
+  command "sed -i -e '/.*ckan\\.plugins.*/a ckan.harvest.mq.type = redis' #{node[:environment]}.ini"
+  action :run
 end
 
 # start the redis service
@@ -77,7 +74,6 @@ end
 #
 # Run the command to create the necessary tables in the database:
 execute "Initialize database for harvester" do
-  user USER
   cwd SOURCE_DIR
   command "paster --plugin=ckanext-harvest harvester initdb #{node[:environment]}.ini"
 end
