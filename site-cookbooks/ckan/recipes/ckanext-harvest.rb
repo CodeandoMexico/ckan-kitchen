@@ -13,6 +13,7 @@ CKAN_PYENV_SRC_DIR = "#{ENV['VIRTUAL_ENV']}/src"
 #  Dependencies installed via Aptitude
 #  - redis-server
 #
+##########################################################################
 
 
 # install requirements for the harvester
@@ -43,7 +44,7 @@ python_pip "#{CKAN_PYENV_SRC_DIR}/ckanext-harvest/pip-requirements.txt" do
 end
 
 #Install the harvester|
-execute "run python setup.py develop to install the ckanext-hasrvest dir" do
+execute "run python setup.py develop to install the ckanext-harvest dir" do
   user USER
   cwd "#{CKAN_PYENV_SRC_DIR}/ckanext-harvest"
 

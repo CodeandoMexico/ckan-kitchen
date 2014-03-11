@@ -3,7 +3,7 @@
     "recipe[ckan]",
     "recipe[ckan::ckanext]",
     "recipe[ckan::ckanext-spatial]",
-    "recipe[ckan::ckanext-harvester]"
+    "recipe[ckan::ckanext-harvest]"
   ],
   "user": "ckan",
   "environment": "development",
