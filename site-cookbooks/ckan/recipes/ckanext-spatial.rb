@@ -26,27 +26,27 @@ end
 
 # Create spatial reference table. Step 1/2
 execute "Run commands for creating spatial reference table.Step 1/2" do
-  command "sudo -u postgres psql -d ckan_default -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql"
+  command "sudo -u postgres psql -d ckan_default -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql -v ON_ERROR_ROLLBACK=on"
   action :run
 end
 
 # Create spatial reference table. Step 2/2
 execute "Run commands for creating spatial reference table.Step 2/2" do
-  command "sudo -u postgres psql -d ckan_default -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql"
+  command "sudo -u postgres psql -d ckan_default -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql -v ON_ERROR_ROLLBACK=on"
   action :run
 end
 
 # Change the owner of the spatial tables to CKAN. Step 1/2
-#execute "Change the owner to spatial tables to the CKAN user to avoid errors later on Step 1/2" do
-#  command "sudo -u postgres psql -d ckan_default -c  \'ALTER TABLE spatial_ref_sys OWNER TO ckan_default;\'"
-#  action :run
-#end
-#
+execute "Change the owner to spatial tables to the CKAN user to avoid errors later on Step 1/2" do
+  command "sudo -u postgres psql -d ckan_default -c  \'ALTER TABLE spatial_ref_sys OWNER TO ckanuser;\'"
+  action :run
+end
+
 # Change the owner of the spatial tables to CKAN. Step 2/2
-#execute "Change the owner to spatial tables to the CKAN user to avoid errors later on Step 2/2" do
-#  command "sudo -u postgres psql -d ckan_default -c  \'ALTER TABLE geometry_columns OWNER TO ckan_default;\'"
-#  action :run
-#end
+execute "Change the owner to spatial tables to the CKAN user to avoid errors later on Step 2/2" do
+  command "sudo -u postgres psql -d ckan_default -c  \'ALTER TABLE geometry_columns OWNER TO ckanuser;\'"
+  action :run
+end
 
 # Install PostGIS dependencies.
 apt_package "python-dev" do
