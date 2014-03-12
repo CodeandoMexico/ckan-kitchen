@@ -9,9 +9,8 @@ CKAN_PYENV_SRC_DIR = "#{ENV['VIRTUAL_ENV']}/src"
 #
 #  Recipe to activate CKAN  - Spatial Extension for stable branch with
 #  Aptitude based package manager
-#
-#  !!!!!WARNING!!!!
-#  This recipe will erase your database.
+#  
+#  Always make a dump of your DB before install.
 #
 #  Dependencies installed via Aptitude
 #  - postgresql-9.1-postgis
@@ -96,17 +95,10 @@ execute "run python setup.py develop to install the ckanext-spatial dir" do
   command "python setup.py develop"
 end
 
-#execute "Clear database for ckanext-spatial" do
-#  user USER
-#  cwd SOURCE_DIR
-#  command "paster --plugin=ckan db clean --config=#{node[:environment]}.ini"
-#end
-
-
 #Add to ini file
 #ckan.plugins = spatial_metadata spatial_query
 #ckan.spatial.srid = 4326
-#ckanext.spatial.search_backend = solr
+#ckanext.spatial.search_backend = postgis
 
 # activate spatial_metadata and spatial_query plugin
 execute "activate spatial_metadata and spatial_query plugin in config file" do
@@ -129,24 +121,17 @@ end
 execute "Define Solr for spatial search_backend and PostGIS SRID backend Step 2/2" do
   user USER
   cwd SOURCE_DIR
-  command "sed -i -e '/.*ckan\\.plugins.*/a ckanext.spatial.search_backend = solr' #{node[:environment]}.ini"
+  command "sed -i -e '/.*ckan\\.plugins.*/a ckanext.spatial.search_backend = postgis' #{node[:environment]}.ini"
   action :run
 end
 
 #create a table to store the datasets extent, called package_extent
 #paster --plugin=ckanext-spatial spatial initdb 4326 --config=/home/ckan/ckan/development.ini 
-#We have to clear initialize the database again:
-#We have to clear the database before creating initialize the database again:
-#execute "Init CKAN database again" do
-#  user USER
-#  cwd SOURCE_DIR
-#  command "paster --plugin=ckan db init --config=#{node[:environment]}.ini"
-#end
-#execute "Initialize database for ckanext-spatial" do
-#  user USER
-#  cwd SOURCE_DIR
-#  command "paster --plugin=ckanext-spatial spatial initdb 4326 --config=#{node[:environment]}.ini"
-#end
+execute "Initialize database for ckanext-spatial" do
+  user USER
+  cwd SOURCE_DIR
+  command "paster --plugin=ckanext-spatial spatial initdb 4326 --config=#{node[:environment]}.ini"
+end
 
 
 #Modify the template for the map search
