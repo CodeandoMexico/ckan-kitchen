@@ -1,5 +1,7 @@
 {
   "run_list": [
+    "recipe[ckan]",
+    "recipe[ckan::ckanext]",
     "recipe[ckan::ckanext-harvest]",
     "recipe[ckan::ckanext-spatial]"
   ],
