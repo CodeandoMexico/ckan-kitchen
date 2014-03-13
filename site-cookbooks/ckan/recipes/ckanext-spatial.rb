@@ -19,7 +19,7 @@ CKAN_PYENV_SRC_DIR = "#{ENV['VIRTUAL_ENV']}/src"
 ######################################################################### 
 
 # install PostGIS from aptitute.
-apt_package "postgresql-9.1-postgis" do
+apt_package "postgis postgresql-9.1 postgresql-server-dev-9.1 postgresql-contrib-9.1 postgis  gdal-bin binutils libgeos-3.2.2 libgeos-c1 libgeos-dev libgdal1-dev libxml2 libxml2-dev libxml2-dev checkinstall proj libpq-dev" do
   action :install
 end
 

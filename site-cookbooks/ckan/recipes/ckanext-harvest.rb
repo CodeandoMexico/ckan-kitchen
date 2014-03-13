@@ -76,7 +76,11 @@ end
 # Run the command to create the necessary tables in the database:
 execute "Initialize database for harvester" do
   cwd SOURCE_DIR
+<<<<<<< HEAD
   command "paster --plugin=ckanext-harvest harvester initdb --config=#{node[:environment]}.ini"
+=======
+  command "paster --plugin=ckanext-harvest harvester initdb --config=/home/ckan/ckan/#{node[:environment]}.ini"
+>>>>>>> c05fab610d12958e54e430001c32d99666ac3d5b
 end
 
 # restart the apache service
