@@ -135,6 +135,14 @@ directory "/var/lib/ckan/default" do
   recursive true
 end
 
+# Increase maximum resources a file can have to 1GB
+execute "Increases maximum resource of a file" do
+    user USER
+    cwd SOURCE_DIR
+
+    command "sed -i -e 's/.*max_resource_size.*/ckan\.max_resource_size = 1024/' #{node[:environment]}.ini"
+end
+
 # Give ckanuser sqlalchemy permission in configuration
 execute "give ckanuser sqlalchemy.url permission on config file" do
   user USER
