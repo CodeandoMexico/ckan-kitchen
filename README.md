@@ -8,6 +8,7 @@ ckan-kitchen
 
     `vagrant init precise64 http://files.vagrantup.com/precise64.box`
 3. Configure the Vagrantfile
+
    ```
     # Configure the port forwarding
      config.vm.network :forwarded_port, guest: 80, host: 8080
@@ -16,6 +17,7 @@ ckan-kitchen
    # Create a private network
      config.vm.network :private_network, ip: "192.168.33.10"
    ```
+   
 4. Start your vagrant 
    
    `vagrant up`
