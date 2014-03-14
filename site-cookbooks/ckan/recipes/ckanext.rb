@@ -207,33 +207,33 @@ end
 
 # Set the custom theme plugin
 
-execute "delete the previous ckanext-custom_theme folder" do
+execute "delete the previous ckanext-datamx_theme folder" do
   user USER
   cwd CKAN_PYENV_SRC_DIR
 
-  command "rm -fr ckanext-custom_theme/"
+  command "rm -fr ckanext-datamx_theme/"
   action :run
 end
 
-execute "clone ckanext-custom_theme files" do
+execute "clone ckanext-datamx_theme files" do
   user USER
   cwd CKAN_PYENV_SRC_DIR
 
-  command "git clone https://github.com/CodeandoMexico/ckanext-custom_theme.git"
+  command "git clone https://github.com/CodeandoMexico/ckanext-datamx_theme.git"
   action :run
 end
 
-execute "run python setup.py develop to install the ckanext-custom_theme dir" do
+execute "run python setup.py develop to install the ckanext-datamx_theme dir" do
   user USER
-  cwd "#{CKAN_PYENV_SRC_DIR}/ckanext-custom_theme"
+  cwd "#{CKAN_PYENV_SRC_DIR}/ckanext-datamx_theme"
 
   command "python setup.py develop"
 end
 
-execute "add the ckanext-custom_theme plugin to the settings" do
+execute "add the ckanext-datamx_theme plugin to the settings" do
   user USER
   cwd SOURCE_DIR
-  command "sed -i -e 's/.*ckan\\.plugins.*/& custom_theme/' #{node[:environment]}.ini"
+  command "sed -i -e 's/.*ckan\\.plugins.*/& datamx_theme/' #{node[:environment]}.ini"
 end
 
 execute "Changes the site.logo and site.title" do
