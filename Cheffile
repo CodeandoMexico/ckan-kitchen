@@ -6,3 +6,4 @@ cookbook "python"
 cookbook "postgresql",
   :github => "phlipper/chef-postgresql"
 cookbook "java"
+cookbook "line"

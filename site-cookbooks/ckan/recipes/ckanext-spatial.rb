@@ -5,21 +5,21 @@ ENV['PATH'] = "#{ENV['VIRTUAL_ENV']}/bin:#{ENV['PATH']}"
 SOURCE_DIR = "#{HOME}/ckan"
 CKAN_PYENV_SRC_DIR = "#{ENV['VIRTUAL_ENV']}/src"
 
-######################################################################### 
-#
-#  Recipe to activate CKAN  - Spatial Extension for stable branch with
-#  Aptitude based package manager
-#  
-#  Always make a dump of your DB before install.
-#
-#  Dependencies installed via Aptitude
-#  - postgresql-9.1-postgis
-#  - python-dev libxml2-dev libxslt1-dev libgeos-c1
-#
-######################################################################### 
+########################################################################## 
+##
+##  Recipe to activate CKAN  - Spatial Extension for stable branch with
+##  Aptitude based package manager
+##  
+##  Always make a dump of your DB before install.
+##
+##  Dependencies installed via Aptitude
+##  - postgresql-9.1-postgis
+##  - python-dev libxml2-dev libxslt1-dev libgeos-c1
+##
+########################################################################## 
 
 # install PostGIS from aptitute.
-apt_package "postgis postgresql-9.1 postgresql-server-dev-9.1 postgresql-contrib-9.1 postgis  gdal-bin binutils libgeos-3.2.2 libgeos-c1 libgeos-dev libgdal1-dev libxml2 libxml2-dev libxml2-dev checkinstall proj libpq-dev" do
+apt_package "postgresql-9.1-postgis" do
   action :install
 end
 
@@ -111,14 +111,14 @@ end
 # activate Ckanext-spatial settings in  ini file.
 
 
-execute "Define Solr for spatial search_backend and PostGIS SRID backend Step 1/2" do
+execute "Define PostGIS spatial search_backend and PostGIS SRID backend Step 1/2" do
   user USER
   cwd SOURCE_DIR
   command "sed -i -e '/.*ckan\\.plugins.*/a ckan.spatial.srid = 4326' #{node[:environment]}.ini"
   action :run
 end
 
-execute "Define Solr for spatial search_backend and PostGIS SRID backend Step 2/2" do
+execute "Define PostGIS for spatial search_backend and PostGIS SRID backend Step 2/2" do
   user USER
   cwd SOURCE_DIR
   command "sed -i -e '/.*ckan\\.plugins.*/a ckanext.spatial.search_backend = postgis' #{node[:environment]}.ini"
@@ -154,6 +154,34 @@ execute "activate in template the Geographic search" do
   command "sed -i -e '/.*block\ssecondary_content*.*/a {% snippet \"spatial/snippets/spatial_query.html\", default_extent=\"[[15.62,-139.21], [64.92, -61.87]]\" %}' #{SOURCE_DIR}/ckan/templates/package/search.html"
   action :run
 end
+
+#Add secondary content to package template
+#
+#{% block secondary_content %}
+#  {{ super() }}
+#  {% set dataset_extent = h.get_pkg_dict_extra(c.pkg_dict, 'spatial', '') %}
+#    {% if dataset_extent %}
+#      {% snippet "spatial/snippets/dataset_map_sidebar.html", extent=dataset_extent %}
+#    {% endif %}
+#{% endblock %}"
+#/home/ckan/ckan/ckan/templates/package/read.html
+#
+replace_or_add "Dataset Extent in #{SOURCE_DIR}/ckan/templates/package/read.html" do
+  path "#{SOURCE_DIR}/ckan/templates/package/read.html"
+  pattern ".*\sblock\sprimary_content.*"
+  linea = <<-eos
+  {% block secondary_content %}
+    {{ super() }}
+    {% set dataset_extent = h.get_pkg_dict_extra(c.pkg_dict, 'spatial', '') %}
+      {% if dataset_extent %}
+        {% snippet \"spatial/snippets/dataset_map_sidebar.html\", extent=dataset_extent %}
+      {% endif %}
+  {% endblock %}
+{% block primary_content_inner %}
+  eos
+  line linea
+end
+
 
 # restart the apache service
 execute "restart the apache service" do
