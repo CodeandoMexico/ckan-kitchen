@@ -1,6 +1,11 @@
 ckan-kitchen
 ============
 
+Ckan-kitchen is an automatic deployment script for Ckan and Datamx.io. It uses chef-solo and knife-solo to do the provisioning of the machine.
+
+##Dependencies
+- Ruby 2.0
+
 ##Installation: Setting a development environment for Datamx
 
 1. [Install Vagrant](http://docs.vagrantup.com/v2/getting-started/index.html)
@@ -42,3 +47,22 @@ ckan-kitchen
    password = vagrant  (You might have to enter the password more than once)
 9. The ckan instance is running in [localhost:8080](http://localhost:8080). 
 10. Enjoy.
+
+##¿Questions or issues?
+We keep the project's conversation in our issues page [issues](https://github.com/CodeandoMexico/ckan-kitchen/issues). If you have any other question you can reach us at <equipo@codeandomexico.org>.
+
+##Contribute
+We want this project to be the result of a community effort. You can collaborate with [code](https://github.com/CodeandoMexico/ckan-kitchen/pulls), [ideas](https://github.com/CodeandoMexico/ckan-kitchen/issues) and [bugs](https://github.com/CodeandoMexico/ckan-kitchen/issues)
+
+##Core Team
+This project is an initiative of [Codeando México](https://github.com/CodeandoMexico?tab=members).
+The core team:
+- [Braulio Chávez](https://github.com/HackerOfDreams)
+- [Noé Domínguez](https://github.com/poguez)
+- [Miguel Martinez](https://github.com/miguelmc)
+
+##Licence
+
+Crafted by [Codeando México](https://github.com/CodeandoMexico?tab=members), 2014.
+
+Available unde the licence: GNU Affero General Public License (AGPL) v3.0. Read the document [LICENSE](/LICENSE) for more information
