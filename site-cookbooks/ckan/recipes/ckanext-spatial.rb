@@ -108,6 +108,14 @@ execute "activate spatial_metadata and spatial_query plugin in config file" do
   action :run
 end
 
+# activate spatial previews for Geojson and WMS
+execute "activate spatial_metadata and spatial_query plugin in config file" do
+  user USER
+  cwd SOURCE_DIR
+  command "sed -i -e 's/.*ckan\\.plugins.*/& resource_proxy geojson_preview wms_preview/' #{node[:environment]}.ini"
+  action :run
+end
+
 # activate Ckanext-spatial settings in  ini file.
 
 
