@@ -38,8 +38,13 @@ Ckan-kitchen is an automatic deployment script for Ckan and Datamx.io. It uses c
    gem install knife-solo -v 0.3.0 
    gem install knife-digital_ocean -v 0.3.0
    gem install librarian-chef
+   
    ```
 
+   If you already have bundler to install dependencies from Gemfile run:
+   ```
+   bundle install
+   ```
 8. Run the chef-scripts
 
    `knife solo bootstrap vagrant@192.168.33.10`
