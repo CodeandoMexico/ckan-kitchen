@@ -22,8 +22,8 @@ execute "delete previous ckanext-harvest source folder" do
   action :run
 end
 
-# clone the source (always target the stable branch)
-execute "Clone ckanext-harvest from stable branch" do
+# clone the source (because it's in development target master branch until stable release)
+execute "Clone ckanext-harvest from master branch" do
   user USER
   cwd "#{CKAN_PYENV_SRC_DIR}"
 
