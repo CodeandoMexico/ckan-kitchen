@@ -44,7 +44,6 @@ Ckan-kitchen is an automatic deployment script for Ckan and Datamx.io. It uses c
    If you already have bundler to install dependencies from Gemfile run:
    ```
    bundle install
-   
    ```
 8. Run the chef-scripts
 
