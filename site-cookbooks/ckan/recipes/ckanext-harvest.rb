@@ -43,6 +43,11 @@ python_pip "#{CKAN_PYENV_SRC_DIR}/ckanext-harvest/pip-requirements.txt" do
   action :install
 end
 
+# Install other Harvester requirements in Python Virtual env 
+python_pip "redis" do
+  action :install
+end
+
 #Install the harvester|
 execute "run python setup.py develop to install the ckanext-harvest dir" do
   user USER
