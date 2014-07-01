@@ -43,6 +43,14 @@ execute "activate disqus plugin in config file" do
   action :run
 end
 
+# activate  Disqus plugin configuration
+execute "Activate disqus username configuration (please edit it) in config file" do
+  user USER
+  cwd SOURCE_DIR
+  command "sed -i -e 's/.*ckan\\.plugins.*/a disqus.name = YOUR_DISQUS_NAME' #{node[:environment]}.ini"
+  action :run
+end
+
 # restart the apache service
 execute "restart the apache service" do
   command "sudo service apache2 restart"
