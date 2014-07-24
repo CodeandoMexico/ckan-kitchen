@@ -23,16 +23,27 @@ Ckan-kitchen is an automatic deployment script for Ckan and Datamx.io. It uses c
      config.vm.network :private_network, ip: "192.168.33.10"
    ```
    
-4. Start your vagrant 
+4. Add your config file for knife in (./.chef/knife.rb).
+
+   ```
+    cookbook_path ["cookbooks", "site-cookbooks"]
+    node_path     "nodes"
+    role_path     "roles"
+    data_bag_path "data_bags"
+    #encrypted_data_bag_secret "data_bag_key"
+    knife[:berkshelf_path] = "cookbooks"
+   ```
+
+5. Start your vagrant 
    
    `vagrant up`
 
-5. Clone the ckan-kitchen repo to your machine
+6. Clone the ckan-kitchen repo to your machine
 
    `git clone https://github.com/CodeandoMexico/ckan-kitchen.git`
 
-6. `cd ckan-kitchen`
-7. Install gems
+7. `cd ckan-kitchen`
+8. Install gems
    
    ```
    gem install knife-solo -v 0.3.0 
@@ -45,13 +56,13 @@ Ckan-kitchen is an automatic deployment script for Ckan and Datamx.io. It uses c
    ```
    bundle install
    ```
-8. Run the chef-scripts
+9. Run the chef-scripts
 
    `knife solo bootstrap vagrant@192.168.33.10`
     
    password = vagrant  (You might have to enter the password more than once)
-9. The ckan instance is running in [localhost:8080](http://localhost:8080). 
-10. Enjoy.
+10. The ckan instance is running in [localhost:8080](http://localhost:8080). 
+11. Enjoy.
 
 ##¿Questions or issues?
 We keep the project's conversation in our issues page [issues](https://github.com/CodeandoMexico/ckan-kitchen/issues). If you have any other question you can reach us at <equipo@codeandomexico.org>.
