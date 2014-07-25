@@ -41,7 +41,7 @@ execute "switch to v2.2 branch" do
   user USER
   cwd SOURCE_DIR
 
-  command "git checkout release-v2.2"
+  command "git checkout release-v2.2.1"
   action :run
 end
 
