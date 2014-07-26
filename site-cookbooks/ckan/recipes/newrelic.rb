@@ -33,7 +33,40 @@ template "#{SOURCE_DIR}/apache.wsgi" do
 end
 
 #Validate newrelic configuration
-execute "Validate New Relic Configuration" do
-  command "#{ENV['VIRTUAL_ENV']}/bin/newrelic-admin validate-config #{HOME}/ckan/newrelic.ini"
+execute "validate new relic configuration" do
+  command "#{env['virtual_env']}/bin/newrelic-admin validate-config #{home}/ckan/newrelic.ini"
+  action :run
+end
+
+
+
+#############################################
+#  Add New Relic Agent for Server
+#############################################
+
+execute "Add repository \n echo deb http://apt.newrelic.com/debian/ newrelic non-free >> /etc/apt/sources.list.d/newrelic.list" do
+  command "echo deb http://apt.newrelic.com/debian/ newrelic non-free >> /etc/apt/sources.list.d/newrelic.list"
+  action :run
+end
+
+execute "Trust repository PGP key \n wget -O- https://download.newrelic.com/548C16BF.gpg | apt-key add -" do
+  command "wget -O- https://download.newrelic.com/548C16BF.gpg | apt-key add -"
+  user "root"
+  action :run
+end
+
+apt_package "newrelic-sysmond" do
+  action :install
+end
+
+execute "Set license_key" do
+  command "nrsysmond-config --set license_key=#{NEWRELIC_LICENSE_KEY}"
+  user "root"
+  action :run
+end
+
+execute "Start Monitor daemon" do
+  command "/etc/init.d/newrelic-sysmond start"
+  user "root"
   action :run
 end
