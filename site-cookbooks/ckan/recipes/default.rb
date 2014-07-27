@@ -36,12 +36,12 @@ execute "clone ckan files" do
   action :run
 end
 
-# switch to v2.2 branch
-execute "switch to v2.2 branch" do
+# switch to v2.2.1 branch
+execute "switch to v2.2.1 branch" do
   user USER
   cwd SOURCE_DIR
 
-  command "git checkout release-v2.2"
+  command "git checkout release-v2.2.1"
   action :run
 end
 

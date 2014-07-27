@@ -1,0 +1,18 @@
+import os
+
+activate_this = os.path.join('<%= @home_dir %>/pyenv/bin/activate_this.py')
+execfile(activate_this, dict(__file__=activate_this))
+
+import newrelic.agent
+
+config_file = '<%= @source_dir %>/newrelic.ini'
+environment = '<%= @deployment_env %>'
+
+newrelic.agent.initialize(config_file, environment)
+
+from paste.deploy import loadapp
+config_filepath = '<%= @source_dir %>/<%= @deployment_env %>.ini'
+from paste.script.util.logging_config import fileConfig
+fileConfig(config_filepath)
+application = loadapp('config:%s' % config_filepath)
+application = newrelic.agent.wsgi_application()(application)
