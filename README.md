@@ -9,21 +9,12 @@ Ckan-kitchen is an automatic deployment script for Ckan and Datamx.io. It uses c
 
 ##Installation: Setting a development environment for Datamx
 
-1. Init the vagrant box
+1. Clone the ckan-kitchen repo to your machine
 
-    `vagrant init precise64 http://files.vagrantup.com/precise64.box`
-2. Configure the Vagrantfile
+   `git clone https://github.com/CodeandoMexico/ckan-kitchen.git`
 
-   ```
-    # Configure the port forwarding
-     config.vm.network :forwarded_port, guest: 80, host: 8080
-     config.vm.network :forwarded_port, guest: 8983, host: 8983
-     config.vm.network :forwarded_port, guest: 5000, host: 5000
-   # Create a private network
-     config.vm.network :private_network, ip: "192.168.33.10"
-   ```
-   
-3. Add your config file for knife in (./.chef/knife.rb).
+
+2. Add your config file for knife in (./.chef/knife.rb).
 
    ```
     cookbook_path ["cookbooks", "site-cookbooks"]
@@ -34,38 +25,42 @@ Ckan-kitchen is an automatic deployment script for Ckan and Datamx.io. It uses c
     knife[:berkshelf_path] = "cookbooks"
    ```
 
+3. `cd ckan-kitchen`
+
 4. Start your vagrant 
    
    `vagrant up`
 
-5. Clone the ckan-kitchen repo to your machine
-
-   `git clone https://github.com/CodeandoMexico/ckan-kitchen.git`
-
-6. `cd ckan-kitchen`
-7. Install gems
+5. Install gems
    
    ```
    gem install knife-solo -v 0.3.0 
    gem install knife-digital_ocean -v 0.3.0
    gem install librarian-chef
-   
    ```
 
    If you already have bundler to install dependencies from Gemfile run:
+  
    ```
    bundle install
    ```
-8. Run the chef-scripts
+
+6. Run the chef-scripts
 
    `knife solo bootstrap vagrant@192.168.33.10 -i ~/.vagrant.d/insecure_private_key`
+
     or import your public keys with:
 
-    `. utils/authentication.sh `
+    ```
+    . utils/authentication.sh 
+    knife solo bootstrap vagrant@192.168.33.10
+    ```
 
    password = vagrant
-9. The ckan instance is running in [localhost:8080](http://localhost:8080). 
-10. Enjoy.
+
+7. The ckan instance is running in [localhost:8080](http://localhost:8080). 
+
+8. Enjoy.
 
 ##¿Questions or issues?
 We keep the project's conversation in our issues page [issues](https://github.com/CodeandoMexico/ckan-kitchen/issues). If you have any other question you can reach us at <equipo@codeandomexico.org>.
