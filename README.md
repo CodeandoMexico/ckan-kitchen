@@ -5,14 +5,14 @@ Ckan-kitchen is an automatic deployment script for Ckan and Datamx.io. It uses c
 
 ##Dependencies
 - Ruby 2.0
+- [Vagrant](http://docs.vagrantup.com/v2/getting-started/index.html)
 
 ##Installation: Setting a development environment for Datamx
 
-1. [Install Vagrant](http://docs.vagrantup.com/v2/getting-started/index.html)
-2. Init the vagrant box
+1. Init the vagrant box
 
     `vagrant init precise64 http://files.vagrantup.com/precise64.box`
-3. Configure the Vagrantfile
+2. Configure the Vagrantfile
 
    ```
     # Configure the port forwarding
@@ -23,7 +23,7 @@ Ckan-kitchen is an automatic deployment script for Ckan and Datamx.io. It uses c
      config.vm.network :private_network, ip: "192.168.33.10"
    ```
    
-4. Add your config file for knife in (./.chef/knife.rb).
+3. Add your config file for knife in (./.chef/knife.rb).
 
    ```
     cookbook_path ["cookbooks", "site-cookbooks"]
@@ -34,16 +34,16 @@ Ckan-kitchen is an automatic deployment script for Ckan and Datamx.io. It uses c
     knife[:berkshelf_path] = "cookbooks"
    ```
 
-5. Start your vagrant 
+4. Start your vagrant 
    
    `vagrant up`
 
-6. Clone the ckan-kitchen repo to your machine
+5. Clone the ckan-kitchen repo to your machine
 
    `git clone https://github.com/CodeandoMexico/ckan-kitchen.git`
 
-7. `cd ckan-kitchen`
-8. Install gems
+6. `cd ckan-kitchen`
+7. Install gems
    
    ```
    gem install knife-solo -v 0.3.0 
@@ -56,13 +56,16 @@ Ckan-kitchen is an automatic deployment script for Ckan and Datamx.io. It uses c
    ```
    bundle install
    ```
-9. Run the chef-scripts
+8. Run the chef-scripts
 
-   `knife solo bootstrap vagrant@192.168.33.10`
-    
-   password = vagrant  (You might have to enter the password more than once)
-10. The ckan instance is running in [localhost:8080](http://localhost:8080). 
-11. Enjoy.
+   `knife solo bootstrap vagrant@192.168.33.10 -i ~/.vagrant.d/insecure_private_key`
+    or import your public keys with:
+
+    `. utils/authentication.sh `
+
+   password = vagrant
+9. The ckan instance is running in [localhost:8080](http://localhost:8080). 
+10. Enjoy.
 
 ##¿Questions or issues?
 We keep the project's conversation in our issues page [issues](https://github.com/CodeandoMexico/ckan-kitchen/issues). If you have any other question you can reach us at <equipo@codeandomexico.org>.
