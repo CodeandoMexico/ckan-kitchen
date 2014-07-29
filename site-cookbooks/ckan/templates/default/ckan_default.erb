@@ -13,4 +13,11 @@
 
   ErrorLog /var/log/apache2/ckan_default.error.log
   CustomLog /var/log/apache2/ckan_default.custom.log combined
+
+  <% if node['environment']=='production' -%>
+  RewriteEngine On
+  RewriteCond %{HTTP_HOST} !^www\.datamx\.io$ 
+  RewriteCond %{HTTP_HOST} ^(.+)\.datamx\.io$
+  RewriteRule ^.*$ http://datamx.io/organization/%1 [L] 
+  <% end -%>
 </VirtualHost>
