@@ -7,6 +7,7 @@ VAGRANT_INSECURE_KEY="ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrt
 VAGRANT_IP="192.168.33.10"
 VAGRANT_PORT=22
 EXISTS_PUB=~/.ssh/id_rsa.pub
+ADD_KEY=""
 
 HELP="\n
 -e PUB_KEY             - Key public file\n
@@ -14,6 +15,7 @@ HELP="\n
 -i VAGRANT_IP          - Vagrant destination IP\n
 -v                     - Verbose mode\n
 -h                     - Show this message\n
+-o                     - identity key
 "
 
 
@@ -56,7 +58,14 @@ function remove {
   
 }
 
-while getopts "hve:ni:rp:" OPTIONS; do
+function connection_key {
+  if [ -f $1 ]; then
+      ADD_KEY="-i $1"
+  fi
+}
+
+
+while getopts "hve:ni:rp:o:" OPTIONS; do
   case $OPTIONS in
     h) about ;;
     v) verbose ;;
@@ -65,6 +74,7 @@ while getopts "hve:ni:rp:" OPTIONS; do
 #    n) NEW_KEY=$OPTARG ;;
     i) setip $OPTARG ;;
     p) setport $OPTARG ;;
+    o) connection_key $OPTARG ;;
     *) echo "Unknown option $1"
        exit 2
        ;;
@@ -73,7 +83,7 @@ done
 
 
 if [ -f $EXISTS_PUB ]; then
-  echo -e $VAGRANT_INSECURE_KEY "\n" `cat $EXISTS_PUB`  | ssh vagrant@$VAGRANT_IP  -p $VAGRANT_PORT 'mkdir -p .ssh;  cat >> /home/vagrant/.ssh/authorized_keys; chmod 600 /home/vagrant/.ssh/authorized_keys'
+  echo -e $VAGRANT_INSECURE_KEY "\n" `cat $EXISTS_PUB`  | ssh vagrant@$VAGRANT_IP $ADD_KEY -p $VAGRANT_PORT 'mkdir -p .ssh;  cat >> /home/vagrant/.ssh/authorized_keys; chmod 600 /home/vagrant/.ssh/authorized_keys'
 fi
 
 echo "LLave agrada correctamente"
