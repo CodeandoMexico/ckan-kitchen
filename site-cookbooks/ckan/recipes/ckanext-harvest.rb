@@ -173,5 +173,5 @@ cron "ckan_harvester_run" do
   hour "*"
   weekday "*"
   user "#{USER}"
-  command "#{ENV['VIRTUAL_ENV']}/bin/paster --plugin=ckanext-harvest harvester run --config=#{SOURCE_DIR}/ckan/#{node[:user] }.ini"
+  command "#{ENV['VIRTUAL_ENV']}/bin/paster --plugin=ckanext-harvest harvester run --config=<%= @source_dir %>/#{node[:environment] }.ini"
 end
