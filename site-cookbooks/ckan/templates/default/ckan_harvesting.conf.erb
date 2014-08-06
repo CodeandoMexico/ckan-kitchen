@@ -1,0 +1,40 @@
+; ===============================
+; ckan harvester
+; ===============================
+
+[program:ckan_gather_consumer]
+
+command=<%= @virtual_env %>/bin/paster --plugin=ckanext-harvest harvester gather_consumer --config=<%= @source_dir  %>/<%= @deployment_env %>.ini
+
+; user that owns virtual environment.
+user=<%= @user %>
+
+numprocs=1
+log_stdout=true
+log_stderr=true
+logfile_maxbytes=50MB
+logfile_backups=10
+logfile=<%= @supervisor_logs_directory  %>/gather_consumer.log
+autostart=true
+autorestart=true
+startsecs=10
+
+
+[program:ckan_fetch_consumer]
+
+command=<%= @virtual_env %>/bin/paster --plugin=ckanext-harvest harvester fetch_consumer --config=<%= @source_dir  %>/<%= @deployment_env %>.ini
+
+
+; user that owns virtual environment.
+user=<%= @user %>
+
+numprocs=1
+log_stdout=true
+log_stderr=true
+logfile_maxbytes=50MB
+logfile_backups=10
+logfile=/var/log/ckan/default/fetch_consumer.log
+autostart=true
+autorestart=true
+startsecs=10
+
