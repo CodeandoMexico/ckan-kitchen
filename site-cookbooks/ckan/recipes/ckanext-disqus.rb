@@ -4,7 +4,8 @@ ENV['VIRTUAL_ENV'] = "#{HOME}/pyenv"
 ENV['PATH'] = "#{ENV['VIRTUAL_ENV']}/bin:#{ENV['PATH']}"
 SOURCE_DIR = "#{HOME}/ckan"
 CKAN_PYENV_SRC_DIR = "#{ENV['VIRTUAL_ENV']}/src"
-
+#Change the name to your disqus account:
+YOUR_DISQUS_NAME = "test"
 #########################################################################
 #
 #  Recipe to activate CKAN - Disqus Extension for stable branch.
@@ -47,7 +48,7 @@ end
 execute "Activate disqus username configuration (please edit it) in config file" do
   user USER
   cwd SOURCE_DIR
-  command "sed -i -e 's/.*ckan\\.plugins.*/a disqus.name = YOUR_DISQUS_NAME' #{node[:environment]}.ini"
+  command "sed -i -e 's/.*ckan\\.plugins.*/a disqus.name = #{YOUR_DISQUS_NAME}/' #{node[:environment]}.ini"
   action :run
 end
 
