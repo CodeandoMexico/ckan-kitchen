@@ -8,7 +8,7 @@ CKAN_PYENV_SRC_DIR = "#{ENV['VIRTUAL_ENV']}/src"
 execute "Delete precious ckanext-openrefine source folder and package" do
   command "source $ENV['VIRTUAL_ENV']/bin/activate && pip uninstall ckanext-openrefine"
   cwd "#{CKAN_PYENV_SRC_DIR}"
-  command "rm -rf ckanext-harvest"
+  command "rm -rf ckanext-openrefine"
   action :run
 end
 
@@ -20,14 +20,14 @@ end
 
 
 execute "run python setup.py develop to install ckanext-openrefine" do
-  cwd "#{CKAN_PYENV_SRC_DIR}"
-  command "source $ENV['VIRTUAL_ENV']/bin/activate && python setup.py develop"
+  cwd "#{CKAN_PYENV_SRC_DIR}/ckanext-openrefine"
+  command "python setup.py develop"
   action :run
 end
 
 execute "activate openrefine extension in config file" do
   cwd SOURCE_DIR
-:  command "sed -i -e 's/.*ckan\\.plugins.*/ openrefine /' #{node[:environment]}.ini"
+  command "sed -i -e 's/.*ckan\\.plugins.*/& openrefine /' #{node[:environment]}.ini"
   action :run
 end
 
